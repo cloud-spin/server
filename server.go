@@ -174,7 +174,7 @@ func (s *ServerImpl) Start() error {
 	signal.Notify(s.stop, os.Interrupt, stopSignal)
 	var serveError error
 
-	go func(server *http.Server) {
+	go func() {
 		if err := s.startHTTPServer(); err != nil {
 			if err != http.ErrServerClosed {
 				// Force shutdown so this method can return with the serve (original) error.
@@ -182,7 +182,7 @@ func (s *ServerImpl) Start() error {
 				s.stop <- os.Interrupt
 			}
 		}
-	}(s.HTTPServer)
+	}()
 
 	signal := <-s.stop
 
