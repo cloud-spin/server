@@ -62,6 +62,43 @@ Output:
 Also refer to the tests at [server_test.go](server_test.go).
 
 
+## Handlers
+
+Package server uses [http.ListenAndSeve](httpxs://golang.org/pkg/net/http/#ListenAndServe) by default to start the HTTP server. However, this can be overriden to be used any other http methods to start the server such as [http.ListenAndServeTLS](https://golang.org/pkg/net/http/#ListenAndServeTLS) or any other custom function. Below code register a custom handler and start the server with http.ListenAndServeTLS instead of the default http.ListenAndServe.
+
+```go
+...
+s := NewServer(configs, router)
+s.RegisterServerStartHandler(func(s *http.Server) error {
+	return s.ListenAndServeTLS(...)
+})
+
+go func() {
+	if err := s.Start(); err != nil {
+		log.Println("Error serving requests")
+		log.Fatal(err)
+	}
+}()
+```
+
+Package server also provides a shutdown hook that can be used to release the system resources at shutdown time. Below code register a custom shutdown handler that gets executed when the http server is shutting down.
+
+```go
+...
+s := NewServer(configs, router)
+s.RegisterOnShutdown(func() {
+	fmt.Println("shutting down server")
+})
+		
+go func() {
+	if err := s.Start(); err != nil {
+		log.Println("Error serving requests")
+		log.Fatal(err)
+	}
+}()
+```
+
+
 ## License
 MIT, see [LICENSE](LICENSE).
 
