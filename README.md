@@ -3,6 +3,18 @@
 Server exposes a reusable HTTP server with graceful shutdown and preconfigured ping, health check and shutdown endpoints. Server uses
 [gorilla/mux](https://github.com/gorilla/mux) as its main request router.
 
+#### Install
+
+From a configured [Go environment](https://golang.org/doc/install#testing):
+```sh
+go get -u github.com/cloud-spin/server
+```
+
+If you are using dep:
+```sh
+dep ensure -add github.com/cloud-spin/server
+```
+
 #### How to Use
 
 Below example starts a fully working HTTP server, test it by pinging its pre-configured "/ping" endpoint and shuts it down gracefully afterwards.
@@ -48,3 +60,14 @@ Output:
 ```
 
 Also refer to the tests at [server_test.go](server_test.go).
+
+
+## License
+MIT, see [LICENSE](LICENSE).
+
+"Use, abuse, have fun and contribute back!"
+
+
+## Contributions
+See [Contributions.md](https://github.com/cloud-spin/docs/blob/master/contributing.md).
+
