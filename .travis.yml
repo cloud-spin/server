@@ -5,6 +5,9 @@ go:
   - "1.11.x"
   - tip
 
+allow_failures:
+  - go: tip
+
 before_install:
   - go get -t -v ./...
 
