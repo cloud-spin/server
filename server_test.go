@@ -249,7 +249,7 @@ func runTestServer(t *testing.T, configs *Configs, router *mux.Router, stopServe
 // Test the specified endpoint with retries as some server operations are async with no external way to find out when they fully finalized.
 func testEndpoint(t *testing.T, port int, path string, expectedStatusCode int) {
 	for attempt := 1; attempt <= 3; attempt++ {
-		resp, err := http.Get(fmt.Sprintf("%s:%d/%s", testServerEndpoint, port, path))
+		resp, err := http.Get(fmt.Sprintf("%s:%d%s", testServerEndpoint, port, path))
 		if err != nil {
 			if expectedStatusCode != 404 {
 				if attempt == maxRetries {
