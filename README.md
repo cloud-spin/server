@@ -4,7 +4,7 @@ Server exposes a reusable HTTP server with graceful shutdown and preconfigured p
 [gorilla/mux](https://github.com/gorilla/mux) as its main request router.
  
 #### Install
- 
+
 From a configured [Go environment](https://golang.org/doc/install#testing):
 ```sh
 go get -u github.com/cloud-spin/server
