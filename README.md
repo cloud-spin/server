@@ -33,7 +33,7 @@ import (
 
 func main() {
 	configs := server.NewConfigs()
-	s := server.NewServer(configs, mux.NewRouter())
+	s := server.New(configs, mux.NewRouter())
 
 	go func() {
 		if err := s.Start(); err != nil {
@@ -68,7 +68,7 @@ Package server uses [http.ListenAndSeve](https://golang.org/pkg/net/http/#Listen
 
 ```go
 ...
-s := NewServer(configs, router)
+s := server.New(configs, router)
 s.RegisterServerStartHandler(func(s *http.Server) error {
 	return s.ListenAndServeTLS(...)
 })
@@ -85,7 +85,7 @@ Package server also provides a shutdown hook that can be used to release the sys
 
 ```go
 ...
-s := NewServer(configs, router)
+s := server.New(configs, router)
 s.RegisterOnShutdown(func() {
 	fmt.Println("shutting down server")
 })
