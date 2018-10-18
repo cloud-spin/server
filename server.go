@@ -118,8 +118,8 @@ func NewConfigs() *Configs {
 	}
 }
 
-// NewServer initializes a new instance of Server.
-func NewServer(configs *Configs, router *mux.Router) Server {
+// New initializes a new instance of Server.
+func New(configs *Configs, router *mux.Router) Server {
 	server := &ServerImpl{
 		Configs:             configs,
 		Router:              router,

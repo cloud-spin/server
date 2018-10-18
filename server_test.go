@@ -28,6 +28,7 @@ import (
 	"net/http"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -124,7 +125,7 @@ func TestRegisterHealthcheckEndpointShouldRegisterAndStartEndpointsSuccessfully(
 func TestNewServerShouldReturnServerWithEndpointsConfigured(t *testing.T) {
 	router := mux.NewRouter()
 	configs := getTestConfigs()
-	server := NewServer(configs, router)
+	server := New(configs, router)
 
 	if server == nil {
 		t.Error("Expected: new instance of Server; Got: nil")
@@ -156,7 +157,7 @@ func TestServerWithStartErrorShouldReturnOriginalStartError(t *testing.T) {
 		Port: -1,
 	}
 	router := mux.NewRouter()
-	server := NewServer(configs, router)
+	server := New(configs, router)
 
 	err := server.Start()
 	if err == nil {
@@ -198,7 +199,7 @@ func TestServerWithStopErrorShouldReturnOriginalStopError(t *testing.T) {
 func TestStopWithoutCallingStartShouldReturnNil(t *testing.T) {
 	router := mux.NewRouter()
 	configs := getTestConfigs()
-	server := NewServer(configs, router)
+	server := New(configs, router)
 
 	if err := server.Stop(); err != nil {
 		t.Errorf("Expected: nil; Got: %s", err.Error())
@@ -208,7 +209,7 @@ func TestStopWithoutCallingStartShouldReturnNil(t *testing.T) {
 func TestGetHTTPServerShouldReturnInitializedServer(t *testing.T) {
 	router := mux.NewRouter()
 	configs := getTestConfigs()
-	server := NewServer(configs, router)
+	server := New(configs, router)
 
 	if s := server.GetHTTPServer(); s == nil {
 		t.Error("Expected: initialized server; Got: nil")
@@ -216,7 +217,7 @@ func TestGetHTTPServerShouldReturnInitializedServer(t *testing.T) {
 }
 
 func runTestServer(t *testing.T, configs *Configs, router *mux.Router, stopServer bool, serverCreatedHook func(Server), serverRunningHook func(Server)) {
-	server := NewServer(configs, router)
+	server := New(configs, router)
 	if server == nil {
 		t.Error("Expected: new instance of Server; Got: nil")
 	}
@@ -254,6 +255,8 @@ func testEndpoint(t *testing.T, port int, path string, expectedStatusCode int) {
 			if expectedStatusCode != 404 {
 				if attempt == maxRetries {
 					t.Fatal(err)
+				} else {
+					time.Sleep(time.Millisecond)
 				}
 			} else {
 				break
@@ -261,6 +264,8 @@ func testEndpoint(t *testing.T, port int, path string, expectedStatusCode int) {
 		} else if resp.StatusCode != expectedStatusCode {
 			if attempt == maxRetries {
 				t.Fatalf("Expected: %d; Got: %d", expectedStatusCode, resp.StatusCode)
+			} else {
+				time.Sleep(time.Millisecond)
 			}
 		} else {
 			break

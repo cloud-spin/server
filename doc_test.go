@@ -11,7 +11,7 @@ import (
 
 func Example() {
 	configs := server.NewConfigs()
-	s := server.NewServer(configs, mux.NewRouter())
+	s := server.New(configs, mux.NewRouter())
 
 	go func() {
 		if err := s.Start(); err != nil {
@@ -21,7 +21,7 @@ func Example() {
 	}()
 
 	// Test if the server was initialized successfully by pinging its "/ping" endpoint.
-	resp, err := http.Get(fmt.Sprintf("http://localhost:%d/%s", configs.Port, configs.PingEndpoint))
+	resp, err := http.Get(fmt.Sprintf("http://localhost:%d%s", configs.Port, configs.PingEndpoint))
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {
